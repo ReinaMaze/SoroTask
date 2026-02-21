@@ -29,7 +29,9 @@ pub struct SoroTaskContract;
 #[contractimpl]
 impl SoroTaskContract {
     pub fn register(env: Env, task_id: u64, config: TaskConfig) {
-        env.storage().persistent().set(&DataKey::Task(task_id), &config);
+        env.storage()
+            .persistent()
+            .set(&DataKey::Task(task_id), &config);
     }
 
     pub fn get_task(env: Env, task_id: u64) -> Option<TaskConfig> {
@@ -281,8 +283,7 @@ mod tests {
         let client = SoroTaskContractClient::new(&env, &id);
 
         let target = env.register_contract(None, MockTarget);
-        let resolver =
-            env.register_contract(None, resolver_true::MockResolverTrue);
+        let resolver = env.register_contract(None, resolver_true::MockResolverTrue);
 
         let cfg = TaskConfig {
             resolver: Some(resolver),
@@ -308,8 +309,7 @@ mod tests {
         let client = SoroTaskContractClient::new(&env, &id);
 
         let target = env.register_contract(None, MockTarget);
-        let resolver =
-            env.register_contract(None, resolver_false::MockResolverFalse);
+        let resolver = env.register_contract(None, resolver_false::MockResolverFalse);
 
         let cfg = TaskConfig {
             resolver: Some(resolver),
