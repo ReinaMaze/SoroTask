@@ -642,11 +642,12 @@ mod tests {
         let client = SoroTaskContractClient::new(&env, &id);
 
         let token_admin = Address::generate(&env);
-        let token_id = env.register_stellar_asset_contract(token_admin.clone());
-        let token_client = soroban_sdk::token::Client::new(&env, &token_id);
-        let token_admin_client = soroban_sdk::token::StellarAssetClient::new(&env, &token_id);
+        let token_id = env.register_stellar_asset_contract_v2(token_admin.clone());
+        let token_address = token_id.address();
+        let token_client = soroban_sdk::token::Client::new(&env, &token_address);
+        let token_admin_client = soroban_sdk::token::StellarAssetClient::new(&env, &token_address);
 
-        client.init(&token_id);
+        client.init(&token_address);
 
         let target = env.register_contract(None, MockTarget);
         let mut cfg = base_config(&env, target);
@@ -675,8 +676,9 @@ mod tests {
         let (env, id) = setup();
         let client = SoroTaskContractClient::new(&env, &id);
 
-        let token_id = env.register_stellar_asset_contract(Address::generate(&env));
-        client.init(&token_id);
+        let token_id = env.register_stellar_asset_contract_v2(Address::generate(&env));
+        let token_address = token_id.address();
+        client.init(&token_address);
 
         let target = env.register_contract(None, MockTarget);
         let mut cfg = base_config(&env, target);
